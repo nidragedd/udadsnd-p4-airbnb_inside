@@ -22,6 +22,23 @@ def _build_data_dir():
     os.makedirs(cst.DATA_DIR_PATH, exist_ok=True)
 
 
+def get_data_file(filename):
+    """
+    Get the full path to the data file with given file name
+    :param filename: (string) data file name to load
+    :return: (string) full path to the data file with given file name
+    """
+    return os.path.join(cst.DATA_DIR_PATH, filename)
+
+
+def get_files_list():
+    """
+    Utility class - Build a list of data file names to iterate over
+    :return: (list) list of data file names
+    """
+    return [cst.LISTING_FULL_FILE, cst.LISTING_LIGHT_FILE, cst.CALENDAR_FILE, cst.REVIEWS_FILE, cst.NEIGHBOURHOODS_FILE]
+
+
 def _download_file_from_url(url, local_filename):
     """
     Download a file from the given url and save it in DATA folder under the given local filename

@@ -6,7 +6,7 @@ Constants file
 @author: nidragedd
 """
 
-DATA_DIR_PATH = "../data2"
+DATA_DIR_PATH = "../data"
 
 DATA_BASE_URL = "http://data.insideairbnb.com/france/ile-de-france/paris/2019-07-09/"
 LISTING_FULL_FILE = "listings.csv.gz"
