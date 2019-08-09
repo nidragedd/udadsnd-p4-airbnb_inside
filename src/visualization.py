@@ -53,3 +53,10 @@ def plot_listings_summary_neighbourhood(data):
             axis[i][j].set_yticklabels(axis[i][j].get_yticklabels(), rotation=20)
 
     plt.show()
+
+
+def print_basic_info_for_feature(data, column):
+    print("There are {} different values for the '{}' feature.".format(data[column].nunique(), column))
+    print("There are {} missing values.".format(data[column].isna().sum()))
+    print("Here is a sample:")
+    print(data[column].unique())
