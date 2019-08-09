@@ -7,6 +7,20 @@ Utility package used by notebooks to clean data
 """
 
 
+def _clean_price_column(df, column):
+    """
+    Inner function to clean one specific 'price' column in the given dataset
+    :param df: (pandas DataFrame) the dataset to transform
+    :param column: (string) price related column
+    :return: transformed dataset, NaN are still there but for others the currency has been removed and the numeric format
+    has been handled (',' separator for thousands)
+    """
+    df[column] = df[column].apply(lambda x: str.replace(x, '$', '') if str(x) != 'nan' else x)
+    df[column] = df[column].apply(lambda x: str.replace(x, ',', '') if str(x) != 'nan' else x)
+    df[column] = df[column].astype("float64")
+    return df
+
+
 def calendar_clean_price(df):
     """
     Clean 2 columns related to price in the calendar dataset
@@ -16,9 +30,20 @@ def calendar_clean_price(df):
     """
     columns = ['price', 'adjusted_price']
     for col in columns:
-        df[col] = df[col].apply(lambda x: str.replace(x, '$', '') if str(x) != 'nan' else x)
-        df[col] = df[col].apply(lambda x: str.replace(x, ',', '') if str(x) != 'nan' else x)
-        df[col] = df[col].astype("float64")
+        df = _clean_price_column(df, col)
+    return df
+
+
+def listing_clean_price(df):
+    """
+    Clean columns related to price in the listings dataset
+    :param df: (pandas DataFrame) the listings dataset to transform
+    :return: transformed dataset, NaN are still there but for others the currency has been removed and the numeric format
+    has been handled (',' separator for thousands)
+    """
+    columns = ['price']
+    for col in columns:
+        df = _clean_price_column(df, col)
     return df
 
 
