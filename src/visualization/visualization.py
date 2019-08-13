@@ -66,11 +66,60 @@ def barplot_something_per_neighbourhood_sorted(df, column):
     :param column: (string) column of the DataFrame to filter on
     """
     figure, axis = plt.subplots(1, 1, figsize=(8, 5))
-    sns.barplot(y="neighbourhood", x='price',
+    sns.barplot(y="neighbourhood", x=column,
                 data=df.groupby('neighbourhood')[column].mean().reset_index().sort_values(by=column), ax=axis)
     axis.set_title("Mean {} per neighbourhood".format(column))
     axis.set_xlabel("Mean {}".format(column))
     axis.set_ylabel("Neighbourhood")
+    plt.show()
+
+
+def _inner_split_location(row):
+    """
+    Inner method called through 'apply' on the whole dataset
+    :param row: each row is given as argument of the function
+    :return: row
+    """
+    elements = row['host_location'].split(', ')
+    if len(elements) == 3:
+        row['city'] = elements[0]
+        row['region'] = elements[1]
+        row['country'] = elements[2]
+    elif len(elements) == 2:
+        row['region'] = elements[0]
+        row['country'] = elements[1]
+    elif len(elements) == 1:
+        row['country'] = elements[0]
+    return row
+
+
+def barplot_hostlocation(df):
+    """
+    Barplot the host location
+    :param df: (pandas DataFrame) dataset to explore
+    """
+    df_host_loc = df[df['host_location'].notnull()][['id', 'host_location']]
+    df_host_loc = df_host_loc.apply(_inner_split_location, axis=1)
+
+    # Update country codes with country name
+    df_host_loc.country.replace('FR', 'France', inplace=True)
+    df_host_loc.country.replace('US', 'United States', inplace=True)
+    df_host_loc.country.replace('GB', 'United Kingdom', inplace=True)
+    df_host_loc.country.replace('IT', 'Italy', inplace=True)
+    df_host_loc.country.replace('CN', 'China', inplace=True)
+    df_host_loc.country.replace('London', 'United Kingdom', inplace=True)
+    df_host_loc.country.replace('LONDON', 'United Kingdom', inplace=True)
+
+    # Plot countries and cities
+    figure, axis = plt.subplots(2, 1, figsize=(15, 12))
+    axis[0].set_title("Most represented countries except France")
+    axis[1].set_title("Most represented cities except Paris")
+    sns.barplot(y='index', x='country', data=df_host_loc.country.value_counts().reset_index()[1:20], ax=axis[0])
+    sns.barplot(y='index', x='city', data=df_host_loc.city.value_counts().reset_index()[1:20], ax=axis[1])
+    axis[0].set_ylabel("Country")
+    axis[1].set_ylabel("City")
+    axis[0].set_xlabel("Count")
+    axis[1].set_xlabel("Count")
     plt.show()
 
 
