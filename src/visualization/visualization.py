@@ -8,6 +8,7 @@ All functions that plots graphs with matplotlib/seaborn should be within this pa
 """
 import matplotlib.pyplot as plt
 import seaborn as sns
+import pandas as pd
 
 from src.utils import utils
 
@@ -251,3 +252,33 @@ def lineplot_feature_distinct_neighbourhood_over_time(df, column, group, col_tit
             axis[i][j].set(xticks='')
             counter += 1
     plt.show()
+
+
+def plot_amenities_nb_features_and_tresholds(df_only_amenities):
+    """
+    Plot a single line representing the number of amenities that would be kept per treshold value (from 0 to 6000 with
+    some particular values such as 0.01% of the number of listings, 0.1%, 1%, etc)
+    :param df_only_amenities: (pandas DataFrame) dataset with only amenities
+    :return dataframe that contains amenities as index and sum of listing containing this amenity as value
+    """
+    # Build a dataframe that contains amenities as index and sum of listing containing this amenity as value
+    amen_dict = {}
+    for amenity in df_only_amenities.columns.tolist():
+        amen_dict[amenity] = df_only_amenities[amenity].sum()
+    df_amen_sum = pd.DataFrame.from_dict(amen_dict, orient='index', columns=['amen_sum'])
+
+    # Take some specific treshold values
+    tresholds = [20, 64, 128, 642, 1000, 1284, 1926, 3000, 4000, 5000, 6000]
+    y = []
+    for t in tresholds:
+        y.append(df_amen_sum[df_amen_sum['amen_sum'] > t].shape[0])
+
+    figure, axis = plt.subplots(1, 1, figsize=(15, 5))
+    axis.set_title('Nb of features kept per treshold value')
+    axis.set_xlabel('Treshold value')
+    axis.set_ylabel('Nb of features')
+    plt.plot(tresholds, y)
+    plt.xticks(tresholds, rotation='90')
+    plt.show()
+
+    return df_amen_sum
