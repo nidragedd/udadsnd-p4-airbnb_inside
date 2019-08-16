@@ -18,7 +18,7 @@ def print_basic_info_for_feature(data, column):
     print("There are {} different values for the '{}' feature.".format(data[column].nunique(), column))
     print("There are {} missing values ({:.2f}%).".format(missing, 100*(missing/total)))
     print("Here is a sample:")
-    print(data[column].unique())
+    print(data[column].unique()[:8])
 
 
 def get_hp_infos_for_listing(df, query_name):

@@ -9,6 +9,7 @@ All functions that plots graphs with matplotlib/seaborn should be within this pa
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
+import numpy as np
 
 from src.utils import utils
 
@@ -282,3 +283,40 @@ def plot_amenities_nb_features_and_tresholds(df_only_amenities):
     plt.show()
 
     return df_amen_sum
+
+
+def countplot_for_imputation(df, features):
+    """
+    Plot bar count diagram for each given features in the given dataframe
+    :param df: (pandas DataFrame) the data to analyze
+    :param features: (list) list of features for which we will display a count bar
+    """
+    nb_feat = len(features)
+    figure, axis = plt.subplots(1, nb_feat, figsize=(15, 5))
+    counter = 0
+    for feat in features:
+        axis[counter].set_title('{} distribution'.format(feat))
+        sns.countplot(x=feat, data=df, ax=axis[counter])
+        counter += 1
+    plt.show()
+
+
+def plot_feature_importances(feat_importances, feature_names, n_top=25):
+    """
+    Barplot the n_top most important features with their names
+    :param feat_importances: (array) array of feature importance values
+    :param feature_names: (array) column names
+    :param n_top: (int) not required, default is 25 - The n top elements to display
+    """
+    # Sort feature importances in descending order
+    indices = np.argsort(feat_importances)[::-1][:n_top]
+
+    # Rearrange feature names so they match the sorted feature importances
+    names = [feature_names[i] for i in indices]
+
+    # Create plot
+    figure, axis = plt.subplots(1, 1, figsize=(13, 8))
+    axis.set_title("Feature Importance (top {})".format(n_top))
+    plt.barh(range(n_top), feat_importances[indices])
+    plt.yticks(range(n_top), names)
+    plt.show()
