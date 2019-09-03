@@ -320,3 +320,45 @@ def plot_feature_importances(feat_importances, feature_names, n_top=25):
     plt.barh(range(n_top), feat_importances[indices])
     plt.yticks(range(n_top), names)
     plt.show()
+
+
+def plot_classification_results_pie(model_names, df):
+    """
+    Plot a pie chart for each model in the given list. Values are taken from DataFrame given as second parameter
+    :param model_names: (list) list of model names to display
+    :param df: (pandas DataFrame) data used for the chart plot
+    """
+    nb_rows = int(np.round(len(model_names) / 2))
+    if len(model_names) % 2 != 0:
+        nb_rows += 1
+    figure, axis = plt.subplots(nb_rows, 2, figsize=(15, 10))
+    i = 0
+    j = 0
+    for k, m in enumerate(model_names):
+        if k > 0 and k % 2 == 0:
+            i += 1
+            j = 0
+        axis[i][j].set_title("Model {}".format(m))
+        axis[i][j].pie(df['y_{}_perc_diff_class'.format(m)].value_counts(),
+                       labels=list(df['y_{}_perc_diff_class'.format(m)].value_counts().index),
+                       autopct='%1.1f%%', shadow=True)
+        j += 1
+    plt.show()
+
+
+def plot_learning_curves(model):
+    """
+    Given a XGBoost model, plot learning curves for train and validation datasets
+    :param model: (object) XGBoost model
+    """
+    results = model.evals_result()
+    epochs = len(results['validation_0']['rmse'])
+    x_axis = range(0, epochs)
+    # Plot Curves
+    fig, ax = plt.subplots()
+    ax.plot(x_axis, results['validation_0']['rmse'], label='Train')
+    ax.plot(x_axis, results['validation_1']['rmse'], label='Validation')
+    ax.legend()
+    plt.ylabel('RMSE')
+    plt.title('XGBoost RMSE evolution over epochs')
+    plt.show()
