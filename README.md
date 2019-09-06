@@ -70,7 +70,7 @@ order to plan my visit/holidays.
 > I would like to have a pretty good idea of the cost variation depending on location place and the dates and, obviously, I would be glad to know what are the odds to find something available for a given period so that perhaps I can adapt my holidays accordingly to places availabilities
 (there is an alternative for the homeowner who would like be sure to rent at the best time that will maximize the profit and so maybe adapt the location availability depending on the market as well).
 
-> Is it possible to find representative themes per places so that the service can help me and guide me in my choice (perhaps by asking me few questions) ?
+> Is it possible to predict price with pretty good accuracy/confidence for a given listing ?
 
 Some questions may be answered by analyzing data and providing graph plots. For the price prediction, I will try to find whether it is possible to predict price and if yes what are the most
 important elements that play a role in its value. So that, still with the "questioning the service user" scenario, we can give a pretty accurate estimation of the cost.
