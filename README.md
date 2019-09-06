@@ -87,7 +87,7 @@ Or you can directly go to the section you are most interested in:
 
 An additional notebook with further Data Exploration is also provided [here](notebook/APPENDIX_Bonus_Exploratory_Data.ipynb).
 
-Or, in the end, you can read the blog post here (**TODO**: put the link once it is written). It corresponds to the `Deployment` (or `Exposition`) phase.
+Or, in the end, you can read the [blog post here](https://nidragedd.github.io/things-you-should-now-before-visiting-Paris/). It corresponds to the `Deployment` (or `Exposition`) phase.
 
 ---
 ## ACKNOWLEDGEMENT
